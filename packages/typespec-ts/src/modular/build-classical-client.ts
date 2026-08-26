@@ -19,7 +19,7 @@ import { useContext } from "../context-manager.js";
 import { useDependencies } from "../framework/hooks/use-dependencies.js";
 import { resolveReference } from "../framework/reference.js";
 import { refkey } from "../framework/refkey.js";
-import { getClientModuleInfo, isMultiEndpointClient } from "../utils/client-utils.js";
+import { getClientModuleInfo } from "../utils/client-utils.js";
 import type { SdkContext } from "../utils/interfaces.js";
 import { NameType, normalizeName } from "../utils/name-utils.js";
 import { getMethodHierarchiesMap, isTenantLevelOperation } from "../utils/operation-util.js";
@@ -68,19 +68,11 @@ export function buildClassicalClient(
   });
 
   // Add the private client member. This will be the client context from /api
-  if (isMultiEndpointClient(dpgContext)) {
-    clientClass.addProperty({
-      name: "_client",
-      type: `Client.${clientName}`,
-      scope: Scope.Private,
-    });
-  } else {
-    clientClass.addProperty({
-      name: "_client",
-      type: `${clientName}`,
-      scope: Scope.Private,
-    });
-  }
+  clientClass.addProperty({
+    name: "_client",
+    type: `${clientName}`,
+    scope: Scope.Private,
+  });
   // Add the pipeline member. This will be the pipeline from /api
   clientClass.addProperty({
     name: "pipeline",
@@ -296,7 +288,7 @@ function buildClientOperationGroups(
       if (!existProperty || existProperty.length === 0) {
         clientClass.addProperty({
           name: groupName,
-          type: resolveReference(refkey(propertyType, layer, "classicOperations")),
+          type: resolveReference(refkey(client, propertyType, layer, "classicOperations")),
           scope: Scope.Public,
           isReadonly: true,
           docs: ["The operation groups for " + groupName],
@@ -304,7 +296,7 @@ function buildClientOperationGroups(
         clientClass
           .getConstructors()[0]
           ?.addStatements(
-            `this.${groupName} = ${resolveReference(refkey(operationName, layer, "getClassicOperations"))}(this._client)`,
+            `this.${groupName} = ${resolveReference(refkey(client, operationName, layer, "getClassicOperations"))}(this._client)`,
           );
       }
     }

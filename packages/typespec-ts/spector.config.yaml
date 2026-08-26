@@ -18,6 +18,7 @@ specs:
   azure/client-generator-core/access: true
   azure/client-generator-core/usage: true
   parameters/body-optionality: true
+  parameters/body-root: true
   type/model/usage: true
   client/structure/default: true
   client/structure/multi-client: true
@@ -111,6 +112,8 @@ specs:
   azure/resource-manager/multi-service: true
   azure/resource-manager/multi-service-shared-models: true
   service/multi-service: true
+  service/multiple-services: true
+  response/status-code-range: true
   parameters/query: true
   azure/client-generator-core/client-doc: true
   azure/client-generator-core/response-as-bool: true
