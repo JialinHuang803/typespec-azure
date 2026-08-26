@@ -111,6 +111,8 @@ specs:
   azure/resource-manager/multi-service: true
   azure/resource-manager/multi-service-shared-models: true
   service/multi-service: true
+  response/status-code-range: true
+  parameters/body-root: true
   parameters/query: true
   azure/client-generator-core/client-doc: true
   azure/client-generator-core/response-as-bool: true
